@@ -1,0 +1,8 @@
+nginx:
+    container_name: egg-init-api
+    image: nginx
+    ports:
+      - 8081:80
+    volumes:
+      - $PWD/apidoc:/usr/share/nginx/html
+    restart: always

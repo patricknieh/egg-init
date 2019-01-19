@@ -1,0 +1,1 @@
+define({  "name": "egg-init",  "description": "A basic apiDoc example",  "version": "0.1.0",  "title": "egg-init接口文档",  "sampleUrl": "http://localhost:7001",  "defaultVersion": "0.0.0",  "apidoc": "0.3.0",  "generator": {    "name": "apidoc",    "time": "2019-01-19T13:44:53.061Z",    "url": "http://apidocjs.com",    "version": "0.17.7"  }});
