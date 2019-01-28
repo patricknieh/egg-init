@@ -1,5 +1,4 @@
 const Service = require('egg').Service;
-
 class service extends Service {
   //新增
   async create(body) {
