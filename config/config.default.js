@@ -35,10 +35,11 @@ module.exports = appInfo => {
 
   //cors
   config.cors = {
-    origin: 'http://localhost:8081',
+    origin: '*',
+    // origin: 'http://localhost:8081',
     // origin: [],
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
-    credentials: true //前端credentials设置这里必须也要设为true
+    // credentials: true //前端credentials设置这里必须也要设为true
   };
   // config.origin = {
   //   whiteList: ['http://localhost:63342','http://localhost:3000','http://localhost:3001'] //设置多个可携带cookie访问的网站白名单

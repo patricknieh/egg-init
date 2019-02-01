@@ -14,6 +14,6 @@ exports.cors = {
   package: 'egg-cors',
 };
 exports.origin = {
-  enable: false,
+  enable: true,
   package: 'egg-origin',
 };
