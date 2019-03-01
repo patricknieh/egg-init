@@ -1,4 +1,4 @@
-module.exports = {
+let net = {
   encode: function (url) {
     return encodeURI(url);
   },
@@ -14,13 +14,13 @@ module.exports = {
   getBreadcrumbs: function (route) {
     return route.split('/')
   },
-  getParamByName: function (name) {
+  getParam: function (name) {
     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     let r = decodeURI(window.location.search).substr(1).match(reg);
     if (r != null) return r[2];
     return null;
   },
-  getAllParamsByLocation: function (href) {
+  getParams: function (href) {
     let url = href ? href : window.location.href;
     let _pa = url.substring(url.indexOf('?') + 1),
       _arrS = _pa.split('&'),
@@ -142,110 +142,101 @@ module.exports = {
         })
     })
   },
-  // 解析cookies
-  parseCookies(cookies) {
-    let cookie = cookies.split(';'), cookieObj = {}, cookieArr = [], key = '', value = '';
-    for (let i = 0; i < cookie.length; i++) {
-      cookieArr = cookie[i].trim().split('=')
-      key = cookieArr[0]
-      value = cookieArr[1]
-      cookieObj[key] = value
-    }
-    return cookieObj
-  },
-  /*设置cookie*/
-  setCookie: function (name, value, day) {
-    let setting = arguments[0];
-    if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
-      for (let i in setting) {
+  cookie: {
+    parse(cookies) {
+      let cookie = cookies.split(';'), cookieObj = {}, cookieArr = [], key = '', value = '';
+      for (let i = 0; i < cookie.length; i++) {
+        cookieArr = cookie[i].trim().split('=')
+        key = cookieArr[0]
+        value = cookieArr[1]
+        cookieObj[key] = value
+      }
+      return cookieObj
+    },
+    set: function (name, value, day) {
+      let setting = arguments[0];
+      if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
+        for (let i in setting) {
+          let oDate = new Date();
+          oDate.setDate(oDate.getDate() + day);
+          document.cookie = i + '=' + setting[i] + ';expires=' + oDate;
+        }
+      } else {
         let oDate = new Date();
         oDate.setDate(oDate.getDate() + day);
-        document.cookie = i + '=' + setting[i] + ';expires=' + oDate;
+        document.cookie = name + '=' + value + ';expires=' + oDate;
       }
-    } else {
-      let oDate = new Date();
-      oDate.setDate(oDate.getDate() + day);
-      document.cookie = name + '=' + value + ';expires=' + oDate;
+    },
+    get: function (name) {
+      let arr = document.cookie.split('; ');
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=');
+        if (arr2[0] == name) {
+          return arr2[1];
+        }
+      }
+      return '';
+    },
+    getFrom: function (cookie,name) {
+      var cookieName = encodeURIComponent(name) + "=",
+        cookieStart = cookie.indexOf(cookieName),
+        cookieValue = null
+      if(cookieStart > -1){
+        var cookieEnd = cookie.indexOf(";",cookieStart)
+        if(cookieEnd == -1){
+          cookieEnd = cookie.length
+        }
+        cookieValue = decodeURIComponent(cookie.substring(cookieStart + cookieName.length,cookieEnd))
+      }
+      return cookieValue
+    },
+    remove: function (name) {
+      this.set(name, 1, -1);
     }
   },
-  /*获取cookie*/
-  getCookie: function (name) {
-    let arr = document.cookie.split('; ');
-    for (let i = 0; i < arr.length; i++) {
-      let arr2 = arr[i].split('=');
-      if (arr2[0] == name) {
-        return arr2[1];
+  storage: {
+    set: function (key, val) {
+      let setting = arguments[0];
+      if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
+        for (let i in setting) {
+          localStorage.setItem(i, JSON.stringify(setting[i]))
+        }
+      } else {
+        localStorage.setItem(key, JSON.stringify(val))
       }
-    }
-    return '';
+    },
+    get: function (key) {
+      if (key) return JSON.parse(localStorage.getItem(key))
+      return null;
+    },
+    remove: function (key) {
+      localStorage.removeItem(key)
+    },
+    clear: function () {
+      localStorage.clear()
+    },
   },
-  /*获取cookie值*/
-  getCookieValue: function (cookie,name) {
-    var cookieName = encodeURIComponent(name) + "=",
-      cookieStart = cookie.indexOf(cookieName),
-      cookieValue = null
-    if(cookieStart > -1){
-      var cookieEnd = cookie.indexOf(";",cookieStart)
-      if(cookieEnd == -1){
-        cookieEnd = cookie.length
+  session: {
+    set: function (key, val) {
+      let setting = arguments[0];
+      if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
+        for (let i in setting) {
+          sessionStorage.setItem(i, JSON.stringify(setting[i]))
+        }
+      } else {
+        sessionStorage.setItem(key, JSON.stringify(val))
       }
-      cookieValue = decodeURIComponent(cookie.substring(cookieStart + cookieName.length,cookieEnd))
-    }
-    return cookieValue
-  },
-
-  /*删除cookie*/
-  removeCookie: function (name) {
-    this.setCookie(name, 1, -1);
-  },
-
-  /*设置localStorage*/
-  setLocal: function (key, val) {
-    let setting = arguments[0];
-    if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
-      for (let i in setting) {
-        localStorage.setItem(i, JSON.stringify(setting[i]))
-      }
-    } else {
-      localStorage.setItem(key, JSON.stringify(val))
-    }
-  },
-  /*获取localStorage*/
-  getLocal: function (key) {
-    if (key) return JSON.parse(localStorage.getItem(key))
-    return null;
-  },
-  /*移除localStorage*/
-  removeLocal: function (key) {
-    localStorage.removeItem(key)
-  },
-  /*移除所有localStorage*/
-  clearLocal: function () {
-    localStorage.clear()
-  },
-
-  /*设置sessionStorage*/
-  setSession: function (key, val) {
-    let setting = arguments[0];
-    if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
-      for (let i in setting) {
-        sessionStorage.setItem(i, JSON.stringify(setting[i]))
-      }
-    } else {
-      sessionStorage.setItem(key, JSON.stringify(val))
+    },
+    get: function (key) {
+      if (key) return JSON.parse(sessionStorage.getItem(key))
+      return null;
+    },
+    remove: function (key) {
+      sessionStorage.removeItem(key)
+    },
+    clear: function () {
+      sessionStorage.clear()
     }
   },
-  /*获取sessionStorage*/
-  getSession: function (key) {
-    if (key) return JSON.parse(sessionStorage.getItem(key))
-    return null;
-  },
-  /*移除sessionStorage*/
-  removeSession: function (key) {
-    sessionStorage.removeItem(key)
-  },
-  /*移除所有sessionStorage*/
-  clearSession: function () {
-    sessionStorage.clear()
-  }
 }
+export default net

@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken')
-const N = require('../../tools/net')
+const Net = require('../../tools/net')
 const appConfig = require('../../config/app.config')
 
 module.exports = options => {
   return async function isUser(ctx, next) {
     // 可以从cookie里面获得token，也可以从request header里获取token
-    const token = ctx.cookies.get('token') ? ctx.cookies.get('token') : N.getCookieValue(ctx.header.cookie,'token')
+    const token = ctx.cookies.get('token') ? ctx.cookies.get('token') : Net.cookie.getFrom(ctx.header.cookie,'token')
 
     try {
       if(!token) ctx.throw('Please login')
