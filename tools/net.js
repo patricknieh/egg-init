@@ -1,4 +1,4 @@
-let net = {
+module.exports = {
   encode: function (url) {
     return encodeURI(url);
   },
@@ -239,4 +239,3 @@ let net = {
     }
   },
 }
-export default net
