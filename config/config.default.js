@@ -1,12 +1,22 @@
-const appConfig = require('../config/app.config')
-
 module.exports = appInfo => {
+
+  console.log('env: ',appInfo.env)
+
   const config = exports = {};
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1523196159518_2034';
 
   // add your config here
   config.middleware = [];
+
+  //listen
+  config.cluster = {
+    listen: {
+      path: '',
+      port: 7002,
+      hostname: '0.0.0.0',
+    }
+  };
 
   //view
   config.view = {
@@ -19,7 +29,7 @@ module.exports = appInfo => {
   // mongoose
   config.mongoose = {
     client: {
-      url: `mongodb://${appConfig.mongoose.user}:${appConfig.mongoose.pass}@127.0.0.1:${appConfig.mongoose.port}/${appConfig.mongoose.database}`,
+      url: `mongodb://paddy:paddy123@127.0.0.1:25015/nuxt-cms`,
       options: {
         useNewUrlParser: true
       },
@@ -44,6 +54,19 @@ module.exports = appInfo => {
   // config.origin = {
   //   whiteList: ['http://localhost:63342','http://localhost:3000','http://localhost:3001'] //设置多个可携带cookie访问的网站白名单
   // };
+
+  //SMTP
+  config.SMTPConfig = {
+    user: 'patricknieh@qq.com',
+    pass: ''
+  };
+
+  //superagent
+  config.superagent = {
+    access_token_url: '',
+    client_id: '',
+    host: '',
+  };
 
   return config;
 };

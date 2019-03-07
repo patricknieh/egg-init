@@ -1,6 +1,5 @@
 const F = require('../../tools/file')
 const nodemailer = require('nodemailer')
-const appConfig = require('../../config/app.config')
 
 module.exports = {
   /**
@@ -126,12 +125,12 @@ module.exports = {
       port: 465,
       secure: true,
       auth: {
-        user: appConfig.SMTPConfig.user,
-        pass: appConfig.SMTPConfig.pass
+        user: this.config.SMTP.user,
+        pass: this.config.SMTP.pass
       }
     })
     let mailOptions = {
-      from: appConfig.SMTPConfig.user,
+      from: this.config.SMTP.user,
       to: to,
       subject: subject,
       html: html

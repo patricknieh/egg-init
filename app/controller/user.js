@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 const md5 = require('md5')
 const gtSlide = require('../public/js/gt-slide')
-const appConfig = require('../../config/app.config')
 
 const Controller = require('egg').Controller;
 
@@ -60,7 +59,7 @@ class controller extends Controller {
    * @apiUse error
    */
   async login() {
-    const {ctx, service} = this
+    const {ctx, service, config} = this
     let {username, password, geetest_challenge, geetest_validate, geetest_seccode} = ctx.request.body
     password = md5(password)
 
@@ -76,7 +75,7 @@ class controller extends Controller {
       let user = await service.user.findOne({username, password})
       if (!user) ctx.throw('用户名或密码错')
 
-      let token = jwt.sign({userId: user.id, userName: user.username}, appConfig.secret)
+      let token = jwt.sign({userId: user.id, userName: user.username}, config.keys)
       // ctx.cookies.set('token', token)
       ctx.helper.data(ctx, {token})
     } catch (e) {
@@ -147,11 +146,11 @@ class controller extends Controller {
    * @apiUse error
    */
   async getUserInfo() {
-    const {ctx, service} = this
+    const {ctx, service, config} = this
     let {token} = ctx.params
 
     try {
-      let decoded = await jwt.verify(token, appConfig.secret)
+      let decoded = await jwt.verify(token, config.keys)
       let user = await service.user.findById(decoded.userId, '-password')
       if (!user) ctx.throw('无记录')
       ctx.helper.data(ctx, user)

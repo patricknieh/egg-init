@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
 const Net = require('../../tools/net')
-const appConfig = require('../../config/app.config')
 
 module.exports = options => {
   return async function isUser(ctx, next) {
@@ -9,7 +8,7 @@ module.exports = options => {
 
     try {
       if(!token) ctx.throw('Please login')
-      const decoded = jwt.verify(token, appConfig.secret)
+      const decoded = jwt.verify(token, this.config.keys)
       const username = decoded.userName
       const id = decoded.userId
       if(!username || !id) ctx.throw('Verify token fail')
