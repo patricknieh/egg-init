@@ -18,4 +18,6 @@ module.exports = app => {
     .post('/user/logout', controller.user.logout)
     .post('/user/resetPassword', controller.user.resetPassword)
     .get('/users', controller.user.list)
+    //di
+    .get('/di/getToken', controller.di.getToken)
 };
