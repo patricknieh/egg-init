@@ -76,7 +76,7 @@ class controller extends Controller {
       if (!user) ctx.throw('用户名或密码错')
 
       let token = jwt.sign({userId: user.id, userName: user.username}, config.keys)
-      // ctx.cookies.set('token', token)
+      ctx.cookies.set('token', token)
       ctx.helper.data(ctx, {token})
     } catch (e) {
       ctx.helper.error(ctx, e)
@@ -97,7 +97,7 @@ class controller extends Controller {
     const {ctx, service} = this
 
     try {
-      ctx.cookies.set('token', null)
+      ctx.cookies.set('token', '')
       ctx.helper.success(ctx)
     } catch (e) {
       ctx.helper.error(ctx, e)
