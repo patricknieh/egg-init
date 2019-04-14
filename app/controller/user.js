@@ -148,8 +148,6 @@ class controller extends Controller {
     const {ctx, service, config} = this
     let {token} = ctx.params
 
-    console.log('token %o', token)
-
     try {
       let decoded = await jwt.verify(token, config.keys)
       let user = await service.user.findById(decoded.userId, '-password')
