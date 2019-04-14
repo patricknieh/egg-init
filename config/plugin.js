@@ -17,3 +17,7 @@ exports.origin = {
   enable: true,
   package: 'egg-origin',
 };
+exports.alinode = {
+  enable: true,
+  package: 'egg-alinode',
+};

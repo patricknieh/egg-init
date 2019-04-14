@@ -80,5 +80,12 @@ module.exports = appInfo => {
     tmpdir: path.join(os.tmpdir(), 'egg-multipart-tmp', appInfo.name)
   };
 
+  //alinode
+  exports.alinode = {
+    // 从 `Node.js 性能平台` 获取对应的接入参数
+    appid: '',
+    secret: '',
+  };
+
   return config;
 };
