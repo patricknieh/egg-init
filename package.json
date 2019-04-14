@@ -16,6 +16,8 @@
     "jsonwebtoken": "^8.4.0",
     "koa-body": "^4.0.6",
     "md5": "^2.2.1",
+    "mz": "^2.7.0",
+    "mz-modules": "^2.1.0",
     "nodemailer": "^5.1.1",
     "promise-async": "^0.2.0",
     "superagent": "^4.1.0"

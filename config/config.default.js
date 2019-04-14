@@ -1,3 +1,6 @@
+const path = require('path')
+const os = require('os')
+
 module.exports = appInfo => {
 
   console.log('env %o',appInfo.env)
@@ -6,6 +9,7 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1523196159518_2034';
   config.token_name = 'token';
+  config.domain = 'http://localhost:7001';
 
   // add your config here
   config.middleware = [];
@@ -67,6 +71,13 @@ module.exports = appInfo => {
     access_token_url: '',
     client_id: '',
     host: '',
+  };
+
+  //upload
+  exports.multipart = {
+    mode: 'file',
+    fileSize: '50mb',
+    tmpdir: path.join(os.tmpdir(), 'egg-multipart-tmp', appInfo.name)
   };
 
   return config;

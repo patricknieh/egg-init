@@ -1,15 +1,42 @@
 const gtSlide = require('../public/js/gt-slide')
 const N = require('../../tools/number')
+const fs = require('mz/fs')
+const path = require('path')
+const pump = require('mz-modules/pump')
 
 const Controller = require('egg').Controller
 class controller extends Controller {
-  async uploadThumb() {
-    const {ctx} = this
+  async uploadFile() {
+    const { ctx, config } = this;
+    const files = ctx.request.files
+    const body = ctx.request.body
 
+    let fields = []
+    let filesRes = []
     try {
-      ctx.helper.filePath(ctx,'/thumb')
+      for (const file of files) {
+        const filename = file.filename.toLowerCase();
+        const targetPath = path.join(config.baseDir, 'app/public/files', filename)
+        const source = fs.createReadStream(file.filepath)
+        const target = fs.createWriteStream(targetPath)
+        await pump(source, target)
+        file.filepath = `${config.domain}/public/files/${filename}`
+        filesRes.push(file)
+      }
+
+      for (const k in body) {
+        fields.push({
+          key: k,
+          value: ctx.request.body[k],
+        })
+      }
+
+      ctx.helper.data(ctx,{fields, files:filesRes})
     }catch (e) {
       ctx.helper.error(ctx,e)
+    }finally {
+      // delete those request tmp files
+      await ctx.cleanupRequestFiles()
     }
   }
 

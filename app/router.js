@@ -6,7 +6,7 @@ module.exports = app => {
     .get('/gt3', controller.common.gtRegister)
     .post('/getCode', controller.common.getCode)
     .post('/sendEmail', controller.common.sendEmail)
-    .post('/uploadThumb', controller.common.uploadThumb)
+    .post('/uploadFile', controller.common.uploadFile)
     //user
     .post('/user', controller.user.register)
     .post('/user/login', controller.user.login)

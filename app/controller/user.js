@@ -75,7 +75,7 @@ class controller extends Controller {
       if (!user) ctx.throw('用户名或密码错')
 
       let token = jwt.sign({userId: user.id, userName: user.username}, config.keys)
-      ctx.cookies.set('token', token)
+      // ctx.cookies.set(config.token_name, token)
       ctx.helper.data(ctx, {token})
     } catch (e) {
       ctx.helper.error(ctx, e)
@@ -147,6 +147,8 @@ class controller extends Controller {
   async getUserInfo() {
     const {ctx, service, config} = this
     let {token} = ctx.params
+
+    console.log('token %o', token)
 
     try {
       let decoded = await jwt.verify(token, config.keys)

@@ -1,5 +1,5 @@
-const F = require('../../tools/file')
 const nodemailer = require('nodemailer')
+const path = require('path')
 
 module.exports = {
   /**
@@ -57,39 +57,6 @@ module.exports = {
       }
     )
   },
-  filePath(ctx, uri) {
-    let file = ctx.request.files.file
-
-    let fileName, filePath
-    if (file.length > 0) {
-      filePath = []
-      for (let f of file) {
-        fileName = F.getFileName(f.path)
-        let fPath = `/uploads${uri}/${fileName}`
-        filePath.push({name: f.name, url: fPath})
-      }
-
-      return (
-        ctx.body = {
-          success: true,
-          data: filePath
-        }
-      )
-    } else {
-      fileName = F.getFileName(file.path)
-      filePath = `/uploads${uri}/${fileName}`
-
-      return (
-        ctx.body = {
-          success: true,
-          data: {
-            name: file.name,
-            url: filePath
-          }
-        }
-      )
-    }
-  },
   pagination(ctx) {
     let query = ctx.query
     let {pageIndex = 1, pageSize = 100, pageSort = 'createdAt'} = query
@@ -105,16 +72,6 @@ module.exports = {
       skip,
       limit,
       sort
-    }
-  },
-  uploadConfig(uri) {
-    return {
-      multipart: true,
-      formidable: {
-        uploadDir: path.join(__dirname, `../../static/uploads${uri}`),
-        keepExtensions: true,    // 保持文件的后缀
-        maxFieldsSize: 2 * 1024 * 1024  // 限制2M
-      }
     }
   },
   async sendMail(to, subject, html) {
