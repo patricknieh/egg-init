@@ -2,7 +2,7 @@ module.exports = app => {
   const {router, controller, middleware} = app;
 
   router
-  //tool
+    //tool
     .get('/gt3', controller.common.gtRegister)
     .post('/getCode', controller.common.getCode)
     .post('/sendEmail', controller.common.sendEmail)
@@ -26,6 +26,8 @@ module.exports = app => {
     .get('/articles/search/:keyword', controller.article.listBySearch)
     .get('/articles/tag/:tag', controller.article.listByTag)
     .get('/articles/tagId/:tagId', controller.article.listByTagId)
+    //tag
+    .get('/tags', controller.tag.list)
     //di
     .get('/di/getToken', controller.di.getToken)
 };

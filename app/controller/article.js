@@ -2,6 +2,20 @@ const promiseAsync = require('promise-async')
 
 const Controller = require('egg').Controller
 class controller extends Controller {
+  /**
+   * @api {post} /article 01.新增文章
+   * @apiSampleRequest /article
+   * @apiName postArticle
+   * @apiGroup Article
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiParam {Array} tags   标签
+   * @apiParam {String} user  用户id
+   *
+   * @apiUse success
+   * @apiUse error
+   */
   async post() {
     const {ctx, service} = this
     const body = ctx.request.body
@@ -26,7 +40,18 @@ class controller extends Controller {
       ctx.helper.error(ctx, e)
     }
   }
-
+  /**
+   * @api {get} /article/:id 02.获取文章
+   * @apiSampleRequest /article/:id
+   * @apiName getArticle
+   * @apiGroup Article
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiUse data
+   * @apiUse SuccessArticleModel
+   * @apiUse error
+   */
   async get() {
     const {ctx, service} = this
     const {id} = ctx.params
@@ -64,7 +89,19 @@ class controller extends Controller {
       ctx.helper.error(ctx, e)
     }
   }
-
+  /**
+   * @api {patch} /article/:id 03.修改文章
+   * @apiSampleRequest /article/:id
+   * @apiName patchArticle
+   * @apiGroup Article
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiUse ParamArticleModel
+   *
+   * @apiUse success
+   * @apiUse error
+   */
   async patch() {
     const {ctx, service} = this
     const body = ctx.request.body
@@ -89,7 +126,17 @@ class controller extends Controller {
       ctx.helper.error(ctx, e)
     }
   }
-
+  /**
+   * @api {delete} /article/:id 04.删除文章
+   * @apiSampleRequest /article/:id
+   * @apiName deleteArticle
+   * @apiGroup Article
+   * @apiPermission user
+   * @apiVersion 0.1.0
+   *
+   * @apiUse success
+   * @apiUse error
+   */
   async del() {
     const {ctx, service} = this
     const {id} = ctx.params
@@ -102,7 +149,18 @@ class controller extends Controller {
       ctx.helper.error(ctx, e)
     }
   }
-
+  /**
+   * @api {get} /articles 05.获取文章列表
+   * @apiSampleRequest /articles
+   * @apiName listArticle
+   * @apiGroup Article
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiUse dataArr
+   * @apiUse SuccessArticleModel
+   * @apiUse error
+   */
   async list() {
     const {ctx, service} = this
     const page = ctx.helper.pagination(ctx)
@@ -127,7 +185,18 @@ class controller extends Controller {
       ctx.helper.error(ctx, e)
     }
   }
-
+  /**
+   * @api {get} /articles/search/:keyword 06.通过搜索获取文章列表
+   * @apiSampleRequest /articles/search/:keyword
+   * @apiName listArticleBySearch
+   * @apiGroup Article
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiUse dataArr
+   * @apiUse SuccessArticleModel
+   * @apiUse error
+   */
   async listBySearch() {
     const {ctx, service} = this
     const page = ctx.helper.pagination(ctx)
@@ -155,7 +224,18 @@ class controller extends Controller {
       ctx.helper.error(ctx, e)
     }
   }
-
+  /**
+   * @api {get} /articles/tag/:tag 07.通过标签名称获取文章列表
+   * @apiSampleRequest /articles/tag/:tag
+   * @apiName listArticleByTag
+   * @apiGroup Article
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiUse dataArr
+   * @apiUse SuccessArticleModel
+   * @apiUse error
+   */
   async listByTag() {
     const {ctx, service} = this
     const page = ctx.helper.pagination(ctx)
@@ -183,7 +263,18 @@ class controller extends Controller {
       ctx.helper.error(ctx, e)
     }
   }
-
+  /**
+   * @api {get} /articles/tagId/:tagId 08.通过标签id获取文章列表
+   * @apiSampleRequest /articles/tagId/:tagId
+   * @apiName listArticleByTagId
+   * @apiGroup Article
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiUse dataArr
+   * @apiUse SuccessArticleModel
+   * @apiUse error
+   */
   async listByTagId() {
     const {ctx, service} = this
     const page = ctx.helper.pagination(ctx)

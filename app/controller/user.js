@@ -93,10 +93,10 @@ class controller extends Controller {
    * @apiUse error
    */
   async logout() {
-    const {ctx, service} = this
+    const {ctx, service, config} = this
 
     try {
-      ctx.cookies.set('token', '')
+      ctx.cookies.set(config.token_name, '')
       ctx.helper.success(ctx)
     } catch (e) {
       ctx.helper.error(ctx, e)

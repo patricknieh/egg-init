@@ -1,5 +1,22 @@
 const Utils = require('../extend/utils')
 /**
+ * @apiDefine SuccessArticleModel
+ * @apiSuccess {String} data.name  名称
+ * @apiSuccess {String} data.type  类型
+ * @apiSuccess {String} data.subType  子类型
+ * @apiSuccess {String} data.title  标题
+ * @apiSuccess {String} data.subTitle  子标题
+ * @apiSuccess {String} data.desc  描述
+ * @apiSuccess {String} data.thumb  缩略图
+ * @apiSuccess {String} data.summary  摘要
+ * @apiSuccess {String} data.content  详细内容
+ * @apiSuccess {Number} data.view  浏览次数
+ * @apiSuccess {Number} data.status  状态
+ * @apiSuccess {Boolean} data.visible  可见属性
+ * @apiSuccess {Object} data.extend  扩展字段
+ * @apiSuccess {ObjectId} data.user  用户
+ */
+/**
  * @apiDefine ParamArticleModel
  * @apiParam {String} name  名称
  * @apiParam {String} type  类型
