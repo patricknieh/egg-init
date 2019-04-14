@@ -153,31 +153,7 @@ module.exports = {
       }
       return cookieObj
     },
-    set: function (name, value, day) {
-      let setting = arguments[0];
-      if (Object.prototype.toString.call(setting).slice(8, -1) === 'Object') {
-        for (let i in setting) {
-          let oDate = new Date();
-          oDate.setDate(oDate.getDate() + day);
-          document.cookie = i + '=' + setting[i] + ';expires=' + oDate;
-        }
-      } else {
-        let oDate = new Date();
-        oDate.setDate(oDate.getDate() + day);
-        document.cookie = name + '=' + value + ';expires=' + oDate;
-      }
-    },
-    get: function (name) {
-      let arr = document.cookie.split('; ');
-      for (let i = 0; i < arr.length; i++) {
-        let arr2 = arr[i].split('=');
-        if (arr2[0] == name) {
-          return arr2[1];
-        }
-      }
-      return '';
-    },
-    getFrom: function (cookie,name) {
+    getFromCookie: function (cookie,name) {
       var cookieName = encodeURIComponent(name) + "=",
         cookieStart = cookie.indexOf(cookieName),
         cookieValue = null
@@ -189,9 +165,6 @@ module.exports = {
         cookieValue = decodeURIComponent(cookie.substring(cookieStart + cookieName.length,cookieEnd))
       }
       return cookieValue
-    },
-    remove: function (name) {
-      this.set(name, 1, -1);
     }
   },
   storage: {

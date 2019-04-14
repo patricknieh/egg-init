@@ -13,7 +13,7 @@ module.exports = appInfo => {
   config.cluster = {
     listen: {
       path: '',
-      port: 7002,
+      port: 7001,
       hostname: '0.0.0.0',
     }
   };
@@ -29,7 +29,7 @@ module.exports = appInfo => {
   // mongoose
   config.mongoose = {
     client: {
-      url: `mongodb://paddy:paddy123@127.0.0.1:25015/nuxt-cms`,
+      url: `mongodb://paddy:paddy123@127.0.0.1:25015/admin-cms`,
       options: {
         useNewUrlParser: true
       },
@@ -57,8 +57,7 @@ module.exports = appInfo => {
 
   //SMTP
   config.SMTPConfig = {
-    user: 'patricknieh@qq.com',
-    pass: ''
+
   };
 
   //superagent

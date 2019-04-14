@@ -121,7 +121,8 @@ module.exports = {
     if (!to || !subject || !html) return '缺少字段'
     let transporter = nodemailer.createTransport({
       host: 'smtp.exmail.qq.com',
-      service: 'qq',  //QQ邮箱
+      service: 'smtp.exmail.qq.com',  //企业邮箱
+      // service: 'qq',  //QQ邮箱
       port: 465,
       secure: true,
       auth: {
