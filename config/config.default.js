@@ -8,7 +8,7 @@ module.exports = appInfo => {
   const config = exports = {};
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1523196159518_2034';
-  config.token_name = 'token';
+  config.tokenName = 'token';
   config.domain = 'http://localhost:7001';
 
   // add your config here
