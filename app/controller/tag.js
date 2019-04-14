@@ -1,6 +1,6 @@
 const Controller = require('egg').Controller
 class controller extends Controller {
-  async list() {
+  async listTag() {
     const {ctx, service} = this
     const query = ctx.query
 

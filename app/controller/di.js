@@ -2,7 +2,7 @@ const request = require('superagent')
 
 const Controller = require('egg').Controller
 class controller extends Controller {
-  async getToken() {
+  async getDiToken() {
     const {ctx, config} = this
 
     try {

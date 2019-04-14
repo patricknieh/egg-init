@@ -16,7 +16,7 @@ class controller extends Controller {
    * @apiUse success
    * @apiUse error
    */
-  async post() {
+  async postArticle() {
     const {ctx, service} = this
     const body = ctx.request.body
     const {tags,user} = body
@@ -52,7 +52,7 @@ class controller extends Controller {
    * @apiUse SuccessArticleModel
    * @apiUse error
    */
-  async get() {
+  async getArticle() {
     const {ctx, service} = this
     const {id} = ctx.params
 
@@ -102,7 +102,7 @@ class controller extends Controller {
    * @apiUse success
    * @apiUse error
    */
-  async patch() {
+  async patchArticle() {
     const {ctx, service} = this
     const body = ctx.request.body
     const {user,tags} = body
@@ -137,7 +137,7 @@ class controller extends Controller {
    * @apiUse success
    * @apiUse error
    */
-  async del() {
+  async delArticle() {
     const {ctx, service} = this
     const {id} = ctx.params
 
@@ -161,7 +161,7 @@ class controller extends Controller {
    * @apiUse SuccessArticleModel
    * @apiUse error
    */
-  async list() {
+  async listArticle() {
     const {ctx, service} = this
     const page = ctx.helper.pagination(ctx)
 
@@ -197,7 +197,7 @@ class controller extends Controller {
    * @apiUse SuccessArticleModel
    * @apiUse error
    */
-  async listBySearch() {
+  async listArticleBySearch() {
     const {ctx, service} = this
     const page = ctx.helper.pagination(ctx)
     const { keyword } = ctx.params
@@ -236,7 +236,7 @@ class controller extends Controller {
    * @apiUse SuccessArticleModel
    * @apiUse error
    */
-  async listByTag() {
+  async listArticleByTag() {
     const {ctx, service} = this
     const page = ctx.helper.pagination(ctx)
     const { tag } = ctx.params
@@ -275,7 +275,7 @@ class controller extends Controller {
    * @apiUse SuccessArticleModel
    * @apiUse error
    */
-  async listByTagId() {
+  async listArticleByTagId() {
     const {ctx, service} = this
     const page = ctx.helper.pagination(ctx)
     const { tagId } = ctx.params

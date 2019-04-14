@@ -144,7 +144,7 @@ class controller extends Controller {
    * @apiUse SuccessUserModel
    * @apiUse error
    */
-  async getUserInfo() {
+  async getUserInfoByToken() {
     const {ctx, service, config} = this
     let {token} = ctx.params
 
@@ -260,7 +260,7 @@ class controller extends Controller {
    * @apiUse SuccessUserModel
    * @apiUse error
    */
-  async list() {
+  async listUser() {
     const {ctx, service} = this
     const page = ctx.helper.pagination(ctx)
 
