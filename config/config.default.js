@@ -57,7 +57,8 @@ module.exports = appInfo => {
 
   //SMTP
   config.SMTPConfig = {
-
+    user: '',
+    pass: ''
   };
 
   //superagent

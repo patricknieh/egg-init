@@ -1,7 +1,7 @@
 const gtSlide = require('../public/js/gt-slide')
 const N = require('../../tools/number')
 
-const Controller = require('egg').Controller;
+const Controller = require('egg').Controller
 class controller extends Controller {
   async uploadThumb() {
     const {ctx} = this
@@ -69,4 +69,4 @@ class controller extends Controller {
     }
   }
 }
-module.exports = controller;
+module.exports = controller

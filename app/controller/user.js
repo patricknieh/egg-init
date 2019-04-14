@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken')
 const md5 = require('md5')
 const gtSlide = require('../public/js/gt-slide')
 
-const Controller = require('egg').Controller;
-
+const Controller = require('egg').Controller
 class controller extends Controller {
   /**
    * @api {post} /user 01.用户注册
@@ -273,4 +272,4 @@ class controller extends Controller {
   }
 }
 
-module.exports = controller;
+module.exports = controller

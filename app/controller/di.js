@@ -1,6 +1,6 @@
 const request = require('superagent')
 
-const Controller = require('egg').Controller;
+const Controller = require('egg').Controller
 class controller extends Controller {
   async getToken() {
     const {ctx, config} = this
@@ -14,4 +14,4 @@ class controller extends Controller {
   }
 }
 
-module.exports = controller;
+module.exports = controller
