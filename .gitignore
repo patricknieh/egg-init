@@ -12,4 +12,4 @@ run/
 *.un~
 app.config.js
 apidoc/
-public/
+public/files
