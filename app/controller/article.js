@@ -7,7 +7,7 @@ class controller extends Controller {
    * @apiSampleRequest /article
    * @apiName postArticle
    * @apiGroup Article
-   * @apiPermission none
+   * @apiPermission 登录用户
    * @apiVersion 0.1.0
    *
    * @apiParam {Array} tags   标签
@@ -49,7 +49,6 @@ class controller extends Controller {
    * @apiVersion 0.1.0
    *
    * @apiUse data
-   * @apiUse SuccessArticleModel
    * @apiUse error
    */
   async getArticle() {
@@ -94,7 +93,7 @@ class controller extends Controller {
    * @apiSampleRequest /article/:id
    * @apiName patchArticle
    * @apiGroup Article
-   * @apiPermission none
+   * @apiPermission 登录用户
    * @apiVersion 0.1.0
    *
    * @apiUse ParamArticleModel
@@ -131,7 +130,7 @@ class controller extends Controller {
    * @apiSampleRequest /article/:id
    * @apiName deleteArticle
    * @apiGroup Article
-   * @apiPermission user
+   * @apiPermission 登录用户
    * @apiVersion 0.1.0
    *
    * @apiUse success
@@ -158,7 +157,6 @@ class controller extends Controller {
    * @apiVersion 0.1.0
    *
    * @apiUse dataArr
-   * @apiUse SuccessArticleModel
    * @apiUse error
    */
   async listArticle() {
@@ -194,7 +192,6 @@ class controller extends Controller {
    * @apiVersion 0.1.0
    *
    * @apiUse dataArr
-   * @apiUse SuccessArticleModel
    * @apiUse error
    */
   async listArticleBySearch() {
@@ -233,7 +230,6 @@ class controller extends Controller {
    * @apiVersion 0.1.0
    *
    * @apiUse dataArr
-   * @apiUse SuccessArticleModel
    * @apiUse error
    */
   async listArticleByTag() {
@@ -272,7 +268,6 @@ class controller extends Controller {
    * @apiVersion 0.1.0
    *
    * @apiUse dataArr
-   * @apiUse SuccessArticleModel
    * @apiUse error
    */
   async listArticleByTagId() {
