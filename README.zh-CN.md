@@ -11,16 +11,21 @@ egg init
 ### 本地开发
 
 ```bash
-$ npm i
-$ npm run dev
-$ open http://localhost:7001/
+$ yarn dev
 ```
 
 ### 部署
 
 ```bash
-$ npm start
+$ EGG_SERVER_ENV=<env> npm start
 $ npm stop
+```
+
+### ApiDoc
+
+```bash
+$ apidoc -i app/ -o apidoc/
+$ docker-compse up -d
 ```
 
 ### 单元测试

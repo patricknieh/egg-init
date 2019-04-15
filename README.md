@@ -17,7 +17,7 @@ $ yarn dev
 ### Deploy
 
 ```bash
-$ yarn start
+$ EGG_SERVER_ENV=<env> yarn start
 $ yarn stop
 ```
 
