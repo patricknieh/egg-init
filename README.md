@@ -24,8 +24,9 @@ $ yarn stop
 ### ApiDoc
 
 ```bash
+$ npm install apidoc -g
 $ apidoc -i app/ -o apidoc/
-$ docker-compse up -d
+$ docker-compose up -d
 ```
 
 ### npm scripts

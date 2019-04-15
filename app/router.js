@@ -1,5 +1,7 @@
 module.exports = app => {
-  const {router, controller, middleware} = app;
+  const {router, controller, middleware} = app
+  const authUser = middleware.auth({target:'user'},app)
+  const authAdmin = middleware.auth({target:'admin'},app)
 
   router
     //tool
@@ -10,17 +12,17 @@ module.exports = app => {
     //user
     .post('/user', controller.user.register)
     .post('/user/login', controller.user.login)
-    .post('/user/logout', controller.user.logout)
-    .post('/user/resetPassword', middleware.isUser(), controller.user.resetPassword)
-    .patch('/user/:id', middleware.isUser(), controller.user.patchUserInfo)
-    .delete('/user/:username', middleware.isAdmin(), controller.user.deleteUser)
+    .post('/user/logout', authUser, controller.user.logout)
+    .post('/user/resetPassword', authUser, controller.user.resetPassword)
+    .patch('/user/:id', authUser, controller.user.patchUserInfo)
+    .delete('/user/:username', authAdmin, controller.user.deleteUser)
     .get('/user/:token', controller.user.getUserInfoByToken)
     .get('/user', controller.user.getUserInfoById)
     .get('/users', controller.user.listUser)
     //article
-    .post('/article', controller.article.postArticle)
-    .patch('/article/:id', controller.article.patchArticle)
-    .delete('/article/:id', controller.article.delArticle)
+    .post('/article', authUser, controller.article.postArticle)
+    .patch('/article/:id', authUser, controller.article.patchArticle)
+    .delete('/article/:id', authUser, controller.article.delArticle)
     .get('/article/:id', controller.article.getArticle)
     .get('/articles', controller.article.listArticle)
     .get('/articles/search/:keyword', controller.article.listArticleBySearch)
