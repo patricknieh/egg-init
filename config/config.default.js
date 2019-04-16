@@ -60,7 +60,7 @@ module.exports = appInfo => {
   // };
 
   //SMTP
-  config.SMTPConfig = {
+  config.SMTP = {
     user: '',
     pass: ''
   };

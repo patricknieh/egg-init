@@ -6,6 +6,18 @@ const pump = require('mz-modules/pump')
 
 const Controller = require('egg').Controller
 class CommonController extends Controller {
+  /**
+   * @api {post} /uploadFile 01.文件上传
+   * @apiSampleRequest /uploadFile
+   * @apiName uploadFile
+   * @apiGroup Common
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiSuccess {Array} fields  字段属性
+   * @apiSuccess {Array} files  文件列表
+   * @apiUse error
+   */
   async uploadFile() {
     const { ctx, config } = this;
     const files = ctx.request.files
@@ -20,7 +32,7 @@ class CommonController extends Controller {
         const source = fs.createReadStream(file.filepath)
         const target = fs.createWriteStream(targetPath)
         await pump(source, target)
-        file.filepath = `${config.domain}/public/files/${filename}`
+        file.filepath = `/public/files/${filename}`
         filesRes.push(file)
       }
 
@@ -39,7 +51,20 @@ class CommonController extends Controller {
       await ctx.cleanupRequestFiles()
     }
   }
-
+  /**
+   * @api {post} /getCode 02.获取验证码
+   * @apiSampleRequest /getCode
+   * @apiName getCode
+   * @apiGroup Common
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiParam {String} username   用户名称
+   * @apiParam {String} email   邮箱
+   *
+   * @apiUse success
+   * @apiUse error
+   */
   async getCode() {
     const {ctx} = this
     const {username,email} = ctx.request.body
@@ -62,20 +87,44 @@ class CommonController extends Controller {
       ctx.helper.error(ctx,e)
     }
   }
-
+  /**
+   * @api {post} /sendEmail 03.发送邮件
+   * @apiSampleRequest /sendEmail
+   * @apiName sendEmail
+   * @apiGroup Common
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiParam {String} to   目标邮箱
+   * @apiParam {String} subject   主题
+   * @apiParam {String} html   HTML代码
+   *
+   * @apiUse success
+   * @apiUse error
+   */
   async sendEmail() {
-    const {ctx} = this
+    const {ctx,config} = this
     const {to,subject,html} = ctx.request.body
 
     try{
       if(!to || !subject || !html) ctx.throw('缺少字段')
-      let res = await ctx.helper.sendMail(to,subject,html)
+      let res = await ctx.helper.sendMail(config,to,subject,html)
       ctx.helper.data(ctx,res)
     }catch (e) {
       ctx.helper.error(ctx,e)
     }
   }
-
+  /**
+   * @api {post} /gt3 04.极验验证
+   * @apiSampleRequest /gt3
+   * @apiName gtRegister
+   * @apiGroup Common
+   * @apiPermission none
+   * @apiVersion 0.1.0
+   *
+   * @apiUse success
+   * @apiUse error
+   */
   async gtRegister() {
     const {ctx} = this
 

@@ -73,7 +73,7 @@ module.exports = {
       sort
     }
   },
-  async sendMail(to, subject, html) {
+  async sendMail(config, to, subject, html) {
     if (!to || !subject || !html) return '缺少字段'
     let transporter = nodemailer.createTransport({
       host: 'smtp.exmail.qq.com',
@@ -82,12 +82,12 @@ module.exports = {
       port: 465,
       secure: true,
       auth: {
-        user: this.config.SMTP.user,
-        pass: this.config.SMTP.pass
+        user: config.SMTP.user,
+        pass: config.SMTP.pass
       }
     })
     let mailOptions = {
-      from: this.config.SMTP.user,
+      from: config.SMTP.user,
       to: to,
       subject: subject,
       html: html
