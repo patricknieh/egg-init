@@ -1,4 +1,4 @@
-let date = {
+module.exports = {
   /**
    * 计算时间
    * @param date
@@ -744,4 +744,3 @@ let date = {
     return this._transferDate(date).getTime();
   }
 }
-export default date
