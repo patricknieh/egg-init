@@ -79,5 +79,11 @@ module.exports = appInfo => {
     tmpdir: path.join(os.tmpdir(), 'egg-multipart-tmp', appInfo.name)
   };
 
+  //alinode
+  // exports.alinode = {
+  //   appid: '',
+  //   secret: '',
+  // };
+
   return config;
 };
