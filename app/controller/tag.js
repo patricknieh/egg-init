@@ -1,5 +1,5 @@
 const Controller = require('egg').Controller
-class controller extends Controller {
+class TagController extends Controller {
   async listTag() {
     const {ctx, service} = this
     const query = ctx.query
@@ -16,4 +16,4 @@ class controller extends Controller {
 
 }
 
-module.exports = controller
+module.exports = TagController

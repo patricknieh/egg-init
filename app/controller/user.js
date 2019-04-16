@@ -3,7 +3,7 @@ const md5 = require('md5')
 const gtSlide = require('../public/js/gt-slide')
 
 const Controller = require('egg').Controller
-class controller extends Controller {
+class UserController extends Controller {
   /**
    * @api {post} /user 01.用户注册
    * @apiSampleRequest /user
@@ -272,4 +272,4 @@ class controller extends Controller {
   }
 }
 
-module.exports = controller
+module.exports = UserController

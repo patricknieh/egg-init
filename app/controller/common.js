@@ -5,7 +5,7 @@ const path = require('path')
 const pump = require('mz-modules/pump')
 
 const Controller = require('egg').Controller
-class controller extends Controller {
+class CommonController extends Controller {
   async uploadFile() {
     const { ctx, config } = this;
     const files = ctx.request.files
@@ -96,4 +96,4 @@ class controller extends Controller {
     }
   }
 }
-module.exports = controller
+module.exports = CommonController

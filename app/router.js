@@ -3,33 +3,38 @@ module.exports = app => {
   const authUser = middleware.auth({target:'user'},app)
   const authAdmin = middleware.auth({target:'admin'},app)
 
+  const {
+    common,
+    user,
+    article,
+    tag,
+  } = controller
+
   router
     //tool
-    .get('/gt3', controller.common.gtRegister)
-    .post('/getCode', controller.common.getCode)
-    .post('/sendEmail', controller.common.sendEmail)
-    .post('/uploadFile', controller.common.uploadFile)
+    .get('/gt3', common.gtRegister)
+    .post('/getCode', common.getCode)
+    .post('/sendEmail', common.sendEmail)
+    .post('/uploadFile', common.uploadFile)
     //user
-    .post('/user', controller.user.register)
-    .post('/user/login', controller.user.login)
-    .post('/user/logout', authUser, controller.user.logout)
-    .post('/user/resetPassword', authUser, controller.user.resetPassword)
-    .patch('/user/:id', authUser, controller.user.patchUserInfo)
-    .delete('/user/:username', authAdmin, controller.user.deleteUser)
-    .get('/user/:token', controller.user.getUserInfoByToken)
-    .get('/user', controller.user.getUserInfoById)
-    .get('/users', controller.user.listUser)
+    .post('/user', user.register)
+    .post('/user/login', user.login)
+    .post('/user/logout', authUser, user.logout)
+    .post('/user/resetPassword', authUser, user.resetPassword)
+    .patch('/user/:id', authUser, user.patchUserInfo)
+    .delete('/user/:username', authAdmin, user.deleteUser)
+    .get('/user/:token', user.getUserInfoByToken)
+    .get('/user', user.getUserInfoById)
+    .get('/users', user.listUser)
     //article
-    .post('/article', authUser, controller.article.postArticle)
-    .patch('/article/:id', authUser, controller.article.patchArticle)
-    .delete('/article/:id', authUser, controller.article.delArticle)
-    .get('/article/:id', controller.article.getArticle)
-    .get('/articles', controller.article.listArticle)
-    .get('/articles/search/:keyword', controller.article.listArticleBySearch)
-    .get('/articles/tag/:tag', controller.article.listArticleByTag)
-    .get('/articles/tagId/:tagId', controller.article.listArticleByTagId)
+    .post('/article', authUser, article.postArticle)
+    .patch('/article/:id', authUser, article.patchArticle)
+    .delete('/article/:id', authUser, article.delArticle)
+    .get('/article/:id', article.getArticle)
+    .get('/articles', article.listArticle)
+    .get('/articles/search/:keyword', article.listArticleBySearch)
+    .get('/articles/tag/:tag', article.listArticleByTag)
+    .get('/articles/tagId/:tagId', article.listArticleByTagId)
     //tag
-    .get('/tags', controller.tag.listTag)
-    //di
-    .get('/di/getToken', controller.di.getDiToken)
+    .get('/tags', tag.listTag)
 };

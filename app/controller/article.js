@@ -1,7 +1,7 @@
 const promiseAsync = require('promise-async')
 
 const Controller = require('egg').Controller
-class controller extends Controller {
+class ArticleController extends Controller {
   /**
    * @api {post} /article 01.新增文章
    * @apiSampleRequest /article
@@ -299,4 +299,4 @@ class controller extends Controller {
 
 }
 
-module.exports = controller
+module.exports = ArticleController

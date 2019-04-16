@@ -1,5 +1,5 @@
-const Service = require('egg').Service;
-class service extends Service {
+const Service = require('egg').Service
+class UserService extends Service {
   //新增
   async create(body) {
     return this.ctx.model.User.create(body)
@@ -39,4 +39,4 @@ class service extends Service {
   }
 }
 
-module.exports = service;
+module.exports = UserService
