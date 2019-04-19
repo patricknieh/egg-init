@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const md5 = require('md5')
-const gtSlide = require('../public/js/gt-slide')
+const gtSlide = require('../extend/gt-slide')
+const promiseAsync = require('promise-async')
 
 const Controller = require('egg').Controller
 class UserController extends Controller {
@@ -12,6 +13,7 @@ class UserController extends Controller {
    * @apiPermission none
    * @apiVersion 0.1.0
    *
+   * @apiParam {Array} tags     标签
    * @apiParam {String} email     邮箱
    * @apiParam {String} username  用户名
    * @apiParam {String} password  密码
@@ -22,15 +24,24 @@ class UserController extends Controller {
   async register() {
     const {ctx, service} = this
     const body = ctx.request.body
-    const {email, username, password} = body
+    const {tags, email, username, password} = body
 
     try {
-      if (!email || !username || !password) ctx.throw('缺少字段')
+      if (!tags ||!email || !username || !password) ctx.throw('缺少字段')
       let emailRecord = await service.user.findOne({email})
       if (emailRecord) ctx.throw('此邮箱已经注册过，如忘记密码请重置密码')
 
       let usernameRecord = await service.user.findOne({username})
       if (usernameRecord) ctx.throw('此用户名已被使用，换一个再试试')
+
+      //清空
+      body.tags = []
+      //返回tag id
+      await promiseAsync.each(tags,async (item,callback) => {
+        let tag = await ctx.model.Tag.findOneAndUpdate({name: item},{name: item},{new: true,upsert: true,setDefaultsOnInsert:true})
+        body.tags.push(tag._id)
+        callback()   //important
+      })
 
       body.password = md5(password)
       await service.user.create(body)

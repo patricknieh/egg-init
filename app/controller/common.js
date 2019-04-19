@@ -1,4 +1,4 @@
-const gtSlide = require('../public/js/gt-slide')
+const gtSlide = require('../extend/gt-slide')
 const N = require('../../tools/number')
 const fs = require('mz/fs')
 const path = require('path')

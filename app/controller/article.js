@@ -24,14 +24,11 @@ class ArticleController extends Controller {
     try {
       if(!tags || !user) ctx.throw('缺少字段')
 
-      // 查询标签集合，没有就插入新标签
-      // 查询出该文章所有标签的id
       body.tags = []
-
       await promiseAsync.each(tags,async (item,callback) => {
         let tag = await ctx.model.Tag.findOneAndUpdate({name: item},{name: item},{new: true,upsert: true,setDefaultsOnInsert:true})
         body.tags.push(tag._id)
-        callback()   //very important
+        callback()
       })
 
       await ctx.model.Article.create(body)
