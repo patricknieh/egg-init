@@ -28,7 +28,7 @@ class ArticleController extends Controller {
       await promiseAsync.each(tags,async (item,callback) => {
         let tag = await ctx.model.Tag.findOneAndUpdate({name: item},{name: item},{new: true,upsert: true,setDefaultsOnInsert:true})
         body.tags.push(tag._id)
-        callback()
+        callback() //important
       })
 
       await ctx.model.Article.create(body)

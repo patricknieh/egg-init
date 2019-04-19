@@ -28,19 +28,34 @@ class UserController extends Controller {
 
     try {
       if (!tags ||!email || !username || !password) ctx.throw('缺少字段')
-      let emailRecord = await service.user.findOne({email})
-      if (emailRecord) ctx.throw('此邮箱已经注册过，如忘记密码请重置密码')
 
-      let usernameRecord = await service.user.findOne({username})
-      if (usernameRecord) ctx.throw('此用户名已被使用，换一个再试试')
-
-      //清空
       body.tags = []
-      //返回tag id
       await promiseAsync.each(tags,async (item,callback) => {
         let tag = await ctx.model.Tag.findOneAndUpdate({name: item},{name: item},{new: true,upsert: true,setDefaultsOnInsert:true})
+        console.log('tag id: ',tag._id)
+
+        let err = null
+        try {
+          let emailRecord = await service.user.findOne({email})
+          if(emailRecord){
+            emailRecord.tags.forEach(i => {
+              if(String(i._id) === String(tag._id)) ctx.throw('此邮箱已经注册过，如忘记密码请重置密码')
+            })
+          }
+
+          let usernameRecord = await service.user.findOne({username})
+          if(usernameRecord){
+            usernameRecord.tags.forEach(i => {
+              if(String(i._id) === String(tag._id)) ctx.throw('此用户名已被使用，换一个再试试')
+            })
+          }
+        }catch (e) {
+          callback(e) //important
+          err = true
+        }
+
         body.tags.push(tag._id)
-        callback()   //important
+        if(!err) callback()
       })
 
       body.password = md5(password)
