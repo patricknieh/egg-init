@@ -13,6 +13,23 @@ module.exports = {
       }
     }
   },
+  pagination(ctx) {
+    let query = ctx.query
+    let {pageIndex = 1, pageSize = 100, pageSort = 'createdAt'} = query
+    let skip = (Number(pageIndex) - 1) * Number(pageSize)
+    let limit = Number(pageSize)
+    let sort = {}
+    sort[pageSort] = -1
+    delete query.pageIndex
+    delete query.pageSize
+    delete query.pageSort
+    return {
+      query,
+      skip,
+      limit,
+      sort
+    }
+  },
   async action(ctx,result){
     try {
       if(result.type === 'data') handle.data(ctx,result.data,result.total)
@@ -39,22 +56,5 @@ module.exports = {
     }
     return{count,records}
 
-  },
-  pagination(ctx) {
-    let query = ctx.query
-    let {pageIndex = 1, pageSize = 100, pageSort = 'createdAt'} = query
-    let skip = (Number(pageIndex) - 1) * Number(pageSize)
-    let limit = Number(pageSize)
-    let sort = {}
-    sort[pageSort] = -1
-    delete query.pageIndex
-    delete query.pageSize
-    delete query.pageSort
-    return {
-      query,
-      skip,
-      limit,
-      sort
-    }
   },
 }
