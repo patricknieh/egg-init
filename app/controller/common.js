@@ -3,7 +3,7 @@ const N = require('../../tools/number')
 const fs = require('mz/fs')
 const path = require('path')
 const pump = require('mz-modules/pump')
-const {handle} = require('../extend/utils')
+const handle = require('../extend/handler')
 
 const Controller = require('egg').Controller
 class CommonController extends Controller {

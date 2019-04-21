@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const md5 = require('md5')
-const gtSlide = require('../extend/gt-slide')
-const promiseAsync = require('promise-async')
+const handle = require('../extend/handler')
+const {pagination} = require('../extend/utils')
 
 const Controller = require('egg').Controller
 class UserController extends Controller {
@@ -24,45 +24,21 @@ class UserController extends Controller {
   async register() {
     const {ctx, service} = this
     const body = ctx.request.body
+    const {User} = ctx.model
     const {tags, email, username, password} = body
 
     try {
       if (!tags ||!email || !username || !password) ctx.throw('缺少字段')
 
       body.tags = []
-      await promiseAsync.each(tags,async (item,callback) => {
-        let tag = await ctx.model.Tag.findOneAndUpdate({name: item},{name: item},{new: true,upsert: true,setDefaultsOnInsert:true})
-        console.log('tag id: ',tag._id)
-
-        let err = null
-        try {
-          let emailRecord = await service.user.findOne({email})
-          if(emailRecord){
-            emailRecord.tags.forEach(i => {
-              if(String(i._id) === String(tag._id)) ctx.throw('此邮箱已经注册过，如忘记密码请重置密码')
-            })
-          }
-
-          let usernameRecord = await service.user.findOne({username})
-          if(usernameRecord){
-            usernameRecord.tags.forEach(i => {
-              if(String(i._id) === String(tag._id)) ctx.throw('此用户名已被使用，换一个再试试')
-            })
-          }
-        }catch (e) {
-          callback(e) //important
-          err = true
-        }
-
-        body.tags.push(tag._id)
-        if(!err) callback()
-      })
+      const result = await service.checkExistUserAndGetTagsId(body, tags)
+      body.tags = result
 
       body.password = md5(password)
-      await service.user.create(body)
-      ctx.helper.success(ctx)
+      await User.create(body)
+      handle.success(ctx)
     } catch (e) {
-      ctx.helper.error(ctx, e)
+      handle.error(ctx, e)
     }
   }
   /**
@@ -84,27 +60,14 @@ class UserController extends Controller {
    * @apiUse error
    */
   async login() {
-    const {ctx, service, config} = this
-    let {username, password, geetest_challenge, geetest_validate, geetest_seccode} = ctx.request.body
-    password = md5(password)
+    const {ctx, service} = this
 
     try {
-      // 对ajax提供的验证凭证进行二次验证
-      let success = await gtSlide.validate(ctx.session.failback, {
-        geetest_challenge,
-        geetest_validate,
-        geetest_seccode
-      })
-      if (!success) ctx.throw('GT 验证失败')
-      // 验证用户
-      let user = await service.user.findOne({username, password})
-      if (!user) ctx.throw('用户名或密码错')
-
-      let token = jwt.sign({userId: user.id, userName: user.username}, config.keys)
+      const token = await service.generateToken()
       // ctx.cookies.set(config.TOKEN_NAME, token)
-      ctx.helper.data(ctx, {token})
+      handle.data(ctx, {token})
     } catch (e) {
-      ctx.helper.error(ctx, e)
+      handle.error(ctx, e)
     }
   }
   /**
@@ -119,13 +82,13 @@ class UserController extends Controller {
    * @apiUse error
    */
   async logout() {
-    const {ctx, service, config} = this
+    const {ctx, config} = this
 
     try {
-      ctx.cookies.set(config.TOKEN_NAME, '')
-      ctx.helper.success(ctx)
+      // ctx.cookies.set(config.TOKEN_NAME, '')
+      handle.success(ctx)
     } catch (e) {
-      ctx.helper.error(ctx, e)
+      handle.error(ctx, e)
     }
   }
   /**
@@ -145,17 +108,19 @@ class UserController extends Controller {
    * @apiUse error
    */
   async resetPassword() {
-    const {ctx, service} = this
+    const {ctx} = this
+    const {User} = ctx.model
     const {username, email, code, newPassword} = ctx.request.body
 
     try {
       if (!username || !email || !code || !newPassword) ctx.throw('缺少字段')
       if (code != ctx.session.validateCode) ctx.throw('验证码不正确')
 
-      await service.user.updateOne({username, email}, {password: md5(newPassword), updatedAt: Date.now()})
-      ctx.helper.success(ctx)
+      await User.updateOne({username, email}, {password: md5(newPassword), updatedAt: Date.now()})
+
+      handle.success(ctx)
     } catch (e) {
-      ctx.helper.error(ctx, e)
+      handle.error(ctx, e)
     }
   }
   /**
@@ -171,16 +136,18 @@ class UserController extends Controller {
    * @apiUse error
    */
   async getUserInfoByToken() {
-    const {ctx, service, config} = this
+    const {ctx, config} = this
     let {token} = ctx.params
+    let {User} = ctx.model
 
     try {
       let decoded = await jwt.verify(token, config.keys)
-      let user = await service.user.findById(decoded.userId, '-password')
+      let user = await User.findById(decoded.userId, '-password')
       if (!user) ctx.throw('无记录')
-      ctx.helper.data(ctx, user)
+
+      handle.data(ctx, user)
     } catch (e) {
-      ctx.helper.error(ctx, e)
+      handle.error(ctx, e)
     }
   }
   /**
@@ -196,15 +163,17 @@ class UserController extends Controller {
    * @apiUse error
    */
   async getUserInfoById() {
-    const {ctx, service} = this
+    const {ctx} = this
     const {id} = ctx.query
+    const {User} = ctx.model
 
     try {
-      let user = await service.user.findById(id, {name: 1, role: 1})
+      let user = await User.findById(id, {name: 1, role: 1})
       if (!user) ctx.throw('无记录')
-      ctx.helper.data(ctx, user)
+
+      handle.data(ctx, user)
     } catch (e) {
-      ctx.helper.error(ctx, e)
+      handle.error(ctx, e)
     }
   }
   /**
@@ -222,29 +191,16 @@ class UserController extends Controller {
    */
   async patchUserInfo() {
     const {ctx, service} = this
-    const {id} = ctx.params
     const body = ctx.request.body
 
     try {
       if (body.password) ctx.throw('包含禁止修改的字段')
 
-      let user = await service.user.findById(id)
-      if (!user) ctx.throw('用户不存在')
-      if (user.role === '超级管理员') ctx.throw('超级管理员不允许修改')
+      await service.updateUser()
 
-      //修改密码
-      if (body.oldPassword && body.newPassword) {
-        if (user.password !== md5(body.oldPassword)) ctx.throw('原密码不正确')
-        await service.user.findByIdAndUpdate(id, {password: md5(body.newPassword), updatedAt: Date.now()})
-      } else {
-        if (body.role === '超级管理员') ctx.throw('超级管理员只能有一个')
-        //修改其他信息
-        body.updatedAt = Date.now()
-        await service.user.findByIdAndUpdate(id, body)
-      }
-      ctx.helper.success(ctx)
+      handle.success(ctx)
     } catch (e) {
-      ctx.helper.error(ctx, e)
+      handle.error(ctx, e)
     }
   }
   /**
@@ -259,17 +215,20 @@ class UserController extends Controller {
    * @apiUse error
    */
   async deleteUser() {
-    const {ctx, service} = this
+    const {ctx} = this
     const {username} = ctx.params
+    const {User} = ctx.model
 
     try {
-      let findUser = await service.user.findOne({username})
+      let findUser = await User.findOne({username})
       if (!findUser) ctx.throw('用户不存在')
       if (findUser.role === '超级管理员') ctx.throw('超级管理员不允许删除')
-      await service.user.findOneAndDelete({username})
-      ctx.helper.success(ctx)
+
+      await User.findOneAndDelete({username})
+
+      handle.success(ctx)
     } catch (e) {
-      ctx.helper.error(ctx, e)
+      handle.error(ctx, e)
     }
   }
   /**
@@ -285,15 +244,21 @@ class UserController extends Controller {
    * @apiUse error
    */
   async listUser() {
-    const {ctx, service} = this
-    const page = ctx.helper.pagination(ctx)
+    const {ctx} = this
+    const {User} = ctx.model
+    const page = pagination(ctx)
 
     try {
-      let count = await service.user.countDocuments(page.query)
-      let users = await service.user.find(page.query, page)
-      ctx.helper.data(ctx, users, count)
+      let count = await User.countDocuments(page.query)
+      let users = await User.find(page.query)
+        .select({password:0})
+        .sort(page.sort)
+        .skip(page.skip)
+        .limit(page.limit)
+
+      handle.data(ctx, users, count)
     } catch (e) {
-      ctx.helper.error(ctx, e)
+      handle.error(ctx, e)
     }
   }
 }

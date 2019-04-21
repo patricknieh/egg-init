@@ -1,4 +1,4 @@
-const {handle} = require('../extend/utils')
+const handle = require('../extend/handler')
 
 const Controller = require('egg').Controller
 class TagController extends Controller {
