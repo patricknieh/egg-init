@@ -1,4 +1,4 @@
-const handle = require('../extend/handler')
+const handle = require('./handler')
 
 module.exports = {
   getModelOptions() {
