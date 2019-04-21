@@ -32,12 +32,12 @@ module.exports = appInfo => {
 
   // mongoose
   config.mongoose = {
-    client: {
-      url: `mongodb://paddy:paddy123@127.0.0.1:25015/admin-cms`,
-      options: {
-        useNewUrlParser: true
+    clients: {
+      db0: {
+        url: `mongodb://paddy:paddy123!%40%23@127.0.0.1:25015/ipr`,
+        options: {useNewUrlParser: true},
       },
-    },
+    }
   };
 
   //security

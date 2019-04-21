@@ -6,6 +6,7 @@ const Utils = require('../extend/utils')
 module.exports = app => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
+  const conn = app.mongooseDB.get('db0');
   const schema = new Schema({
     name: {
       type: String,
@@ -19,5 +20,5 @@ module.exports = app => {
     }
   },Utils.getModelOptions());
 
-  return mongoose.model('Tag', schema);
+  return conn.model('Tag', schema);
 }

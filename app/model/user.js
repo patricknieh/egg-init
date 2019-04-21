@@ -20,6 +20,7 @@ const Utils = require('../extend/utils')
 module.exports = app => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
+  const conn = app.mongooseDB.get('db0');
   const schema = new Schema({
     role: {
       type: String,
@@ -81,5 +82,5 @@ module.exports = app => {
     }
   }
 
-  return mongoose.model('User', schema);
+  return conn.model('User', schema);
 }
