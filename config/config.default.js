@@ -35,7 +35,7 @@ module.exports = appInfo => {
     clients: {
       db0: {
         url: `mongodb://paddy:paddy123!%40%23@127.0.0.1:25015/ipr`,
-        options: {useNewUrlParser: true},
+        options: {useNewUrlParser: true,useFindAndModify: false},
       },
     }
   };

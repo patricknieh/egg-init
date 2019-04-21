@@ -48,7 +48,7 @@ module.exports = {
     )
   },
   message(ctx, message) {
-    console.error(error)
+    console.error(message)
     return (
       ctx.body = {
         success: false,

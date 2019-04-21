@@ -1,4 +1,7 @@
 const promiseAsync = require('promise-async')
+const {action} = require('../extend/utils')
+
+const handle = require('../extend/handler')
 
 const Controller = require('egg').Controller
 class ArticleController extends Controller {
@@ -18,24 +21,8 @@ class ArticleController extends Controller {
    */
   async createArticle() {
     const {ctx, service} = this
-    const body = ctx.request.body
-    const {tags,user} = body
-
-    try {
-      if(!tags || !user) ctx.throw('缺少字段')
-
-      body.tags = []
-      await promiseAsync.each(tags,async (item,callback) => {
-        let tag = await ctx.model.Tag.findOneAndUpdate({name: item},{name: item},{new: true,upsert: true,setDefaultsOnInsert:true})
-        body.tags.push(tag._id)
-        callback() //important
-      })
-
-      await ctx.model.Article.create(body)
-      ctx.helper.success(ctx)
-    } catch (e) {
-      ctx.helper.error(ctx, e)
-    }
+    let result = await service.article.createArticle()
+    action(ctx, result)
   }
   /**
    * @api {get} /article/:id 02.获取文章
