@@ -16,7 +16,7 @@ class ArticleController extends Controller {
    * @apiUse success
    * @apiUse error
    */
-  async postArticle() {
+  async createArticle() {
     const {ctx, service} = this
     const body = ctx.request.body
     const {tags,user} = body
@@ -98,7 +98,7 @@ class ArticleController extends Controller {
    * @apiUse success
    * @apiUse error
    */
-  async patchArticle() {
+  async updateArticle() {
     const {ctx, service} = this
     const body = ctx.request.body
     const {user,tags} = body

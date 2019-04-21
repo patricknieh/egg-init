@@ -27,9 +27,9 @@ module.exports = app => {
     .get('/user', user.getUserInfoById)
     .get('/users', user.listUser)
     //article
-    .post('/article', authUser, article.postArticle)
-    .patch('/article/:id', authUser, article.patchArticle)
-    .delete('/article/:id', authUser, article.delArticle)
+    .post('/article', article.createArticle)
+    .patch('/article/:id', article.updateArticle)
+    .delete('/article/:id', article.delArticle)
     .get('/article/:id', article.getArticle)
     .get('/articles', article.listArticle)
     .get('/articles/search/:keyword', article.listArticleBySearch)
