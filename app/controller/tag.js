@@ -1,19 +1,21 @@
+const {handle} = require('../extend/utils')
+
 const Controller = require('egg').Controller
 class TagController extends Controller {
   async listTag() {
-    const {ctx, service} = this
+    const {ctx} = this
     const query = ctx.query
+    const {Tag} = ctx.model
 
     try {
-      let records = await ctx.model.Tag.find(query)
+      let records = await Tag.find(query)
         .sort({ 'updatedAt': -1 })
-        .exec()
-      ctx.helper.data(ctx, records)
+
+      handle.data(ctx, records)
     } catch (e) {
-      ctx.helper.error(ctx, e)
+      handle.error(ctx, e)
     }
   }
-
 }
 
 module.exports = TagController

@@ -3,6 +3,7 @@ const N = require('../../tools/number')
 const fs = require('mz/fs')
 const path = require('path')
 const pump = require('mz-modules/pump')
+const {handle} = require('../extend/utils')
 
 const Controller = require('egg').Controller
 class CommonController extends Controller {
@@ -43,11 +44,10 @@ class CommonController extends Controller {
         })
       }
 
-      ctx.helper.data(ctx,{fields, files:filesRes})
+      handle.data(ctx,{fields, files:filesRes})
     }catch (e) {
-      ctx.helper.error(ctx,e)
+      handle.error(ctx,e)
     }finally {
-      // delete those request tmp files
       await ctx.cleanupRequestFiles()
     }
   }
@@ -82,9 +82,9 @@ class CommonController extends Controller {
       ctx.session.validateCode = code
       let html = `<div>验证码： <span style="font-size: 20px;color:#ff4c29;">${code}</span> 10分钟内有效</div>`
       await ctx.helper.sendMail(email,'获取验证码',html)
-      ctx.helper.success(ctx)
+      handle.success(ctx)
     }catch (e) {
-      ctx.helper.error(ctx,e)
+      handle.error(ctx,e)
     }
   }
   /**
@@ -109,9 +109,9 @@ class CommonController extends Controller {
     try{
       if(!to || !subject || !html) ctx.throw('缺少字段')
       let res = await ctx.helper.sendMail(config,to,subject,html)
-      ctx.helper.data(ctx,res)
+      handle.data(ctx,res)
     }catch (e) {
-      ctx.helper.error(ctx,e)
+      handle.error(ctx,e)
     }
   }
   /**

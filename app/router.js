@@ -11,7 +11,7 @@ module.exports = app => {
   } = controller
 
   router
-    //tool
+    //common
     .get('/gt3', common.gtRegister)
     .post('/getCode', common.getCode)
     .post('/sendEmail', common.sendEmail)
