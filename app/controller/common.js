@@ -7,6 +7,10 @@ const handle = require('../extend/handler')
 
 const Controller = require('egg').Controller
 class CommonController extends Controller {
+  async hello() {
+    const {ctx} = this
+    await ctx.render('index.njk', {message: 'hello, you need help?'})
+  }
   /**
    * @api {post} /uploadFile 01.文件上传
    * @apiSampleRequest /uploadFile

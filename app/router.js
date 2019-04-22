@@ -12,6 +12,7 @@ module.exports = app => {
 
   router
     //common
+    .get('/', common.hello)
     .get('/gt3', common.gtRegister)
     .post('/getCode', common.getCode)
     .post('/sendEmail', common.sendEmail)
