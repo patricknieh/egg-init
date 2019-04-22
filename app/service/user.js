@@ -1,6 +1,7 @@
 const promiseAsync = require('promise-async')
 const gtSlide = require('../extend/gt-slide')
 const md5 = require('md5')
+const jwt = require('jsonwebtoken')
 
 const Service = require('egg').Service
 class UserService extends Service {
