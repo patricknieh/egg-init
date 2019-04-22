@@ -31,7 +31,7 @@ class UserController extends Controller {
       if (!tags ||!email || !username || !password) ctx.throw('缺少字段')
 
       body.tags = []
-      const result = await service.checkExistUserAndGetTagsId(body, tags)
+      const result = await service.user.checkExistUserAndGetTagsId(body, tags)
       body.tags = result
 
       body.password = md5(password)
@@ -63,7 +63,7 @@ class UserController extends Controller {
     const {ctx, service} = this
 
     try {
-      const token = await service.generateToken()
+      const token = await service.user.generateToken()
       // ctx.cookies.set(config.TOKEN_NAME, token)
       handle.data(ctx, {token})
     } catch (e) {
@@ -196,7 +196,7 @@ class UserController extends Controller {
     try {
       if (body.password) ctx.throw('包含禁止修改的字段')
 
-      await service.updateUser()
+      await service.user.updateUser()
 
       handle.success(ctx)
     } catch (e) {
