@@ -1,5 +1,5 @@
 module.exports = app => {
-  const {router, controller, middleware} = app
+  const {io, router, controller, middleware} = app
   const authUser = middleware.auth({target:'user'},app)
   const authAdmin = middleware.auth({target:'admin'},app)
 
@@ -38,4 +38,7 @@ module.exports = app => {
     .get('/articles/tagId/:tagId', article.listArticleByTagId)
     //tag
     .get('/tags', tag.listTag)
+
+  io.of('/')
+    .route('exchange', io.controller.nsp.exchange)
 };

@@ -55,9 +55,39 @@ module.exports = appInfo => {
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
     // credentials: true //前端credentials设置这里必须也要设为true
   };
+
+  //origin
   // config.origin = {
   //   whiteList: ['http://localhost:63342','http://localhost:3000','http://localhost:3001'] //设置多个可携带cookie访问的网站白名单
   // };
+
+  //socket
+  config.io = {
+    namespace: {
+      '/': {
+        connectionMiddleware: [ 'auth' ],
+        packetMiddleware: [ ], // 针对消息的处理暂时不实现
+      },
+    },
+
+    // cluster 模式下，通过 redis 实现数据共享
+    redis: {
+      host: '127.0.0.1',
+      port: 6379,
+      auth_pass: 'paddy123',
+      db:0,
+    },
+  };
+
+  //redis
+  config.redis = {
+    client: {
+      port: 6379,
+      host: '127.0.0.1',
+      password: 'paddy123',
+      db: 0,
+    },
+  };
 
   //SMTP
   config.SMTP = {
@@ -73,14 +103,14 @@ module.exports = appInfo => {
   };
 
   //upload
-  exports.multipart = {
+  config.multipart = {
     mode: 'file',
     fileSize: '50mb',
     tmpdir: path.join(os.tmpdir(), 'egg-multipart-tmp', appInfo.name)
   };
 
   //alinode
-  // exports.alinode = {
+  // config.alinode = {
   //   appid: '',
   //   secret: '',
   // };
