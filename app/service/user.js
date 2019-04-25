@@ -8,6 +8,7 @@ class UserService extends Service {
   async checkExistUserAndGetTagsId (body,tags) {
     const {ctx} = this
     const {Tag,User} = ctx.model
+    const {email, username} = body
 
     let result = []
     await promiseAsync.each(tags,async (item,callback) => {
