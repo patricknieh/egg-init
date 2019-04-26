@@ -24,16 +24,8 @@ $ yarn stop
 ### ApiDoc
 
 ```bash
-$ npm install apidoc -g
-$ apidoc -i app/ -o apidoc/
+$ yarn api
 $ docker-compose up -d
 ```
-
-### npm scripts
-
-- Use `npm run lint` to check code style.
-- Use `npm test` to run unit test.
-- Use `npm run autod` to auto detect dependencies upgrade, see [autod](https://www.npmjs.com/package/autod) for more detail.
-
 
 [egg]: https://eggjs.org
