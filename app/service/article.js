@@ -239,6 +239,8 @@ class ArticleService extends Service {
     const { Tag,Article } = ctx.model
 
     let record = await Tag.find({name: tag})
+    if(!record[0]) return{type:'message',message:'无记录'}
+
     let conditions = { tags: {$all:[record[0]._id]} }
     let count = await Article.countDocuments(Object.assign(conditions,page.query))
     let records = await Article.find(Object.assign(conditions,page.query))
