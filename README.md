@@ -24,7 +24,7 @@ $ yarn stop
 ### ApiDoc
 
 ```bash
-$ yarn api
+$ yarn doc
 $ docker-compose up -d
 ```
 

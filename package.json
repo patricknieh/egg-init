@@ -51,7 +51,7 @@
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
     "autod": "autod",
-    "api": "apidoc -i app/ -o apidoc/"
+    "doc": "apidoc -i app/ -o apidoc/"
   },
   "ci": {
     "version": "8"
