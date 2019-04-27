@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const handle = require('../extend/handler')
-const {utils} = require('web-base')
+const utils = require('web-base')
 
 module.exports = (options, app) => {
   return async function isUser(ctx, next) {

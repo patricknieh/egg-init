@@ -1,5 +1,5 @@
 const gtSlide = require('../extend/gt-slide')
-const {utils} = require('web-base')
+const utils = require('web-base')
 const fs = require('mz/fs')
 const path = require('path')
 const pump = require('mz-modules/pump')

@@ -25,7 +25,7 @@
     "nodemailer": "^5.1.1",
     "promise-async": "^0.2.0",
     "superagent": "^4.1.0",
-    "web-base": "^1.1.17"
+    "web-base": "^1.2.1"
   },
   "devDependencies": {
     "autod": "^3.0.1",
