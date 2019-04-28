@@ -3,6 +3,19 @@
   "version": "1.0.0",
   "description": "egg init",
   "private": true,
+  "scripts": {
+    "start": "egg-scripts start --sticky --daemon --title=egg-server-egg-init",
+    "stop": "egg-scripts stop --title=egg-server-egg-init",
+    "dev": "egg-bin dev --sticky",
+    "debug": "egg-bin debug",
+    "test": "npm run lint -- --fix && npm run test-local",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
+    "lint": "eslint .",
+    "ci": "npm run lint && npm run cov",
+    "autod": "autod",
+    "doc": "apidoc -i app/ -o apidoc/"
+  },
   "dependencies": {
     "egg": "^2.2.1",
     "egg-alinode": "^2.0.1",
@@ -25,7 +38,7 @@
     "nodemailer": "^5.1.1",
     "promise-async": "^0.2.0",
     "superagent": "^4.1.0",
-    "web-base": "^1.2.1"
+    "web-base": "^1.3.6"
   },
   "devDependencies": {
     "autod": "^3.0.1",
@@ -39,19 +52,6 @@
   },
   "engines": {
     "node": ">=8.9.0"
-  },
-  "scripts": {
-    "start": "egg-scripts start --sticky --daemon --title=egg-server-egg-init",
-    "stop": "egg-scripts stop --title=egg-server-egg-init",
-    "dev": "egg-bin dev --sticky",
-    "debug": "egg-bin debug",
-    "test": "npm run lint -- --fix && npm run test-local",
-    "test-local": "egg-bin test",
-    "cov": "egg-bin cov",
-    "lint": "eslint .",
-    "ci": "npm run lint && npm run cov",
-    "autod": "autod",
-    "doc": "apidoc -i app/ -o apidoc/"
   },
   "ci": {
     "version": "8"
